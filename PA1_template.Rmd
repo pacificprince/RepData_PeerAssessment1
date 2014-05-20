@@ -27,12 +27,12 @@ unlink(temp)
 ### Histogram of the total number of steps taken each day  
 First calculate total number of steps taken each day. For this we use the aggregate 
 function as it ignores NAs by default.
-```{r cache=TRUE}
+```{r}
 totalStepsPerDay <- aggregate(data$steps ~ data$date, FUN = sum)
 colnames(totalStepsPerDay) <- c("date", "steps")
 ```
 Next plot the histogram.
-```{r cache=TRUE}
+```{r}
 hist(totalStepsPerDay$steps, 
      main = "Histogram of total number of steps taken each day", 
      xlab="Total Steps Per Day", ylab = "Frequency")
@@ -80,9 +80,9 @@ NA values in the dataset.
 The **adply** function from the **plyr** package is used for this.
 The new dataset is called **imputedData**. This is the same as the old 
 dataset but with the missing data filled in.
-```{r warning=FALSE, message=FALSE, cache=TRUE}
+```{r  cache=TRUE}
 library(plyr)
-imputedData <- adply(data, 1, function(x) if(is.na(x)){x$step <- avgStepsPerInterval$step[avgStepsPerInterval$interval == x$interval]} else{x$step <- x$step})
+imputedData <- adply(data, 1, function(x) if(is.na(x$step)){x$step <- avgStepsPerInterval$step[avgStepsPerInterval$interval == x$interval]} else{x$step <- x$step})
 imputedData$steps <- imputedData$V1  # Set new column V1 to steps column
 imputedData$V1 <- NULL # Delete new column
 ```
@@ -90,7 +90,7 @@ imputedData$V1 <- NULL # Delete new column
 Now using the **imputedData** dataframe
 First calculate total number of steps taken each day. For this we use the aggregate 
 function as it ignores NAs by default.
-```{r}
+```{r cache=TRUE}
 totalStepsPerDayImputed <- aggregate(imputedData$steps ~ imputedData$date, FUN = sum)
 colnames(totalStepsPerDayImputed) <- c("date", "steps")
 ```

@@ -120,7 +120,7 @@ dataset but with the missing data filled in.
 
 ```r
 library(plyr)
-imputedData <- adply(data, 1, function(x) if (is.na(x)) {
+imputedData <- adply(data, 1, function(x) if (is.na(x$step)) {
     x$step <- avgStepsPerInterval$step[avgStepsPerInterval$interval == x$interval]
 } else {
     x$step <- x$step
@@ -136,7 +136,18 @@ function as it ignores NAs by default.
 
 ```r
 totalStepsPerDayImputed <- aggregate(imputedData$steps ~ imputedData$date, FUN = sum)
+```
+
+```
+## Error: invalid type (NULL) for variable 'imputedData$steps'
+```
+
+```r
 colnames(totalStepsPerDayImputed) <- c("date", "steps")
+```
+
+```
+## Error: object 'totalStepsPerDayImputed' not found
 ```
 
 
@@ -161,7 +172,7 @@ mean(totalStepsPerDayImputed$steps)
 ```
 
 ```
-## [1] 10766
+## Error: object 'totalStepsPerDayImputed' not found
 ```
 
 ### Median of total number of steps taken each day
@@ -171,7 +182,7 @@ median(totalStepsPerDayImputed$steps)
 ```
 
 ```
-## [1] 10766
+## Error: object 'totalStepsPerDayImputed' not found
 ```
 
 One would not expect the mean and median to change using this scheme. As seen 
